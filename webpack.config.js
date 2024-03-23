@@ -60,9 +60,9 @@ module.exports = async (env, options) => {
         chunks: ["polyfill", "popup"],
       }),
       new HtmlWebpackPlugin({
-        filename: "form.html",
-        template: "./src/form/form.html",
-        chunks: ["polyfill", "form"],
+        filename: "home.html",
+        template: "./src/home/home.html",
+        chunks: ["polyfill", "home"],
       }),
       new HtmlWebpackPlugin({
         filename: "taskpane.html",

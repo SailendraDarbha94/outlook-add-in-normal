@@ -9,9 +9,10 @@ Office.onReady((info) => {
   if (info.host === Office.HostType.Outlook) {
     document.getElementById("sideload-msg").style.display = "none";
     document.getElementById("app-body").style.display = "flex";
-    document.getElementById("run").onclick = run;
-    document.getElementById("dialog-button").onclick = testingNewThing;
-    document.getElementById("open-dialog").onclick = openDialog;
+    document.getElementById("form-submit-button").onclick = formSubmit;
+    // document.getElementById("run").onclick = run;
+    // document.getElementById("dialog-button").onclick = testingNewThing;
+    // document.getElementById("open-dialog").onclick = openDialog;
   }
 });
 
@@ -50,9 +51,36 @@ function processMessage(arg) {
   dialog.close();
 }
 
+function processFormError (params){
+  document.getElementById("form-header").innerHTML = "<b class='form-error'>" + params + "</b>";
+}
+
+export async function formSubmit (){
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+  let msg;
+  if(username === Office.context.mailbox.userProfile.emailAddress){
+    if(password === "admin"){
+      window.location.replace("https://localhost:3000/home.html");
+    } else {
+      msg = "wrong password";
+      processFormError(msg);
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
+    }
+  } else {
+    msg = "invalid credentials"
+    processFormError(msg);
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+  }
+}
+
 export async function run() {
   // Get a reference to the current message
   const item = Office.context.mailbox.item;
+
+
 
   // Write message property value to the task pane
   document.getElementById("item-subject").innerHTML = "<b>Subject:</b> <br/>" + item.subject;
